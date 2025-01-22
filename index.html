@@ -3,297 +3,233 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Embed Link Generator</title>
-    <link href="https://fonts.googleapis.com/css2?family=Fira+Mono:wght@300&display=swap" rel="stylesheet">
+    <title>#ADO by teethehuman</title>
     <style>
-        /* General Styles */
+        /* Base Styles */
         body {
-            font-family: 'Fira Mono', monospace;
-            background-color: #121212;
-            color: #fff;
             margin: 0;
             padding: 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
+            background: #121212;
+            color: #ffffff;
+            font-family: 'Fira Mono', monospace;
             overflow: hidden;
-            position: relative;
+            user-select: none; /* Prevent text selection */
+            cursor: none; /* Hide default cursor */
         }
 
-        /* Particle Background */
-        .particles {
+        /* Custom Cursor */
+        .custom-cursor {
+            position: fixed;
+            width: 0;
+            height: 0;
+            border-left: 5px solid transparent;
+            border-right: 5px solid transparent;
+            border-bottom: 10px solid white;
+            pointer-events: none;
+            transform: rotate(-45deg); /* Rotate the cursor */
+            z-index: 9999;
+            transition: transform 0.1s ease-in-out;
+        }
+
+        /* Ripple Effect */
+        .ripple {
             position: absolute;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.5);
+            transform: scale(0);
+            animation: ripple-animation 0.6s ease-out;
+            pointer-events: none;
+            width: 20px; /* Smaller size */
+            height: 20px; /* Smaller size */
+        }
+
+        @keyframes ripple-animation {
+            to {
+                transform: scale(3); /* Adjust size of the ripple */
+                opacity: 0;
+            }
+        }
+
+        /* Hall of Clowns Section */
+        .hall-of-clowns {
+            text-align: center;
+            margin: 50px 0;
+            font-size: 2.5rem;
+            color: #fff;
+        }
+
+        /* Grid container for the squares */
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 40px;
+            padding: 40px;
+            max-width: 1200px;
+            margin: 0 auto;
+            overflow-y: auto; /* Scrollable if needed */
+            max-height: 60vh; /* Limit height of the grid */
+        }
+
+        .grid-item {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 12px;
+            height: 250px;
+            padding: 15px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(10px);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .grid-item:hover {
+            transform: scale(1.05);
+            box-shadow: 0px 6px 20px rgba(0, 0, 0, 0.5);
+        }
+
+        h1 {
+            font-size: 3.5rem;
+            text-align: center;
+            margin: 60px 0 10px;
+            animation: fadeIn 2s ease;
+        }
+
+        .subtitle {
+            font-size: 1.2rem;
+            text-align: center;
+            margin-bottom: 50px;
+            color: #bbbbbb;
+        }
+
+        .dot-grid {
+            background: radial-gradient(#222 1px, transparent 1px);
+            background-size: 20px 20px;
+            position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background: transparent;
-            pointer-events: none;
             z-index: -1;
         }
 
-        .particle {
-            position: absolute;
-            width: 10px;
-            height: 10px;
-            background-color: #7f75e2;
-            border-radius: 50%;
-            animation: particleMovement 4s infinite;
-        }
-
-        @keyframes particleMovement {
-            0% {
-                transform: translateY(0) translateX(0);
-            }
-            100% {
-                transform: translateY(100vh) translateX(100vw);
-            }
-        }
-
-        /* Container Styling */
-        .container {
-            width: 100%;
-            max-width: 500px;
-            background-color: #1a1a1a;
-            padding: 30px;
-            border-radius: 15px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
-            animation: fadeIn 1s ease-out;
-            transform: translateY(20px);
-        }
-
-        /* Header */
-        h1 {
-            text-align: center;
-            font-size: 2rem;
-            margin-bottom: 20px;
-            color: #7f75e2;
-            font-family: 'Fira Mono', monospace;
-            letter-spacing: 1px;
-            animation: slideIn 1s ease-out;
-        }
-
-        /* Form Group */
-        .form-group {
-            margin-bottom: 18px;
-        }
-
-        .form-group label {
-            font-weight: bold;
-            color: #ddd;
-            margin-bottom: 5px;
-        }
-
-        .form-group input,
-        .form-group textarea {
-            width: 100%;
-            padding: 12px;
-            font-size: 16px;
-            border-radius: 8px;
-            border: 2px solid #555;
-            background-color: #2e2e2e;
-            color: white;
-            transition: all 0.3s ease-in-out;
-            outline: none;
-            box-sizing: border-box;
-        }
-
-        .form-group input[type="color"] {
-            width: 80px;
-            cursor: pointer;
-        }
-
-        .form-group input:focus,
-        .form-group textarea:focus {
-            border-color: #7f75e2;
-            box-shadow: 0 0 8px rgba(127, 117, 226, 0.7);
-        }
-
-        /* Button */
-        .btn {
-            width: 100%;
-            padding: 12px;
-            background-color: #7f75e2;
-            color: white;
-            border: none;
-            border-radius: 10px;
-            font-size: 16px;
-            cursor: pointer;
-            transition: background-color 0.3s ease, transform 0.2s ease-in-out;
-        }
-
-        .btn:hover {
-            background-color: #6654b8;
-            transform: scale(1.05);
-        }
-
-        /* Embed Preview Section */
-        .embed-preview {
-            margin-top: 20px;
-            padding: 15px;
-            background-color: #333;
-            color: white;
-            border-radius: 12px;
-            box-shadow: 0 10px 15px rgba(0, 0, 0, 0.2);
-            max-height: 200px;
-            overflow-y: auto;
-            animation: slideIn 1.5s ease-out;
-        }
-
-        .embed-preview .title {
-            font-size: 20px;
-            font-weight: bold;
-            margin-bottom: 10px;
-            color: #7f75e2;
-        }
-
-        .embed-preview .description {
-            font-size: 14px;
-            line-height: 1.5;
-            white-space: pre-wrap;
-        }
-
-        .embed-preview .footer {
-            font-size: 12px;
-            color: #aaa;
-            text-align: center;
-        }
-
-        /* Copy Button */
-        .copy-btn {
-            margin-top: 15px;
-            padding: 12px;
-            background-color: #7f75e2;
-            color: white;
-            border-radius: 8px;
-            font-size: 16px;
-            cursor: pointer;
-            transition: background-color 0.3s ease, transform 0.2s ease-in-out;
-        }
-
-        .copy-btn:hover {
-            background-color: #6654b8;
-            transform: scale(1.05);
-        }
-
-        /* Animations */
         @keyframes fadeIn {
-            0% {
+            from {
                 opacity: 0;
                 transform: translateY(20px);
             }
-            100% {
+            to {
                 opacity: 1;
                 transform: translateY(0);
             }
         }
-
-        @keyframes slideIn {
-            0% {
-                opacity: 0;
-                transform: translateX(-30px);
-            }
-            100% {
-                opacity: 1;
-                transform: translateX(0);
-            }
-        }
-
-        /* Footer */
-        .footer-text {
-            margin-top: 20px;
-            text-align: center;
-            font-size: 12px;
-            color: #bbb;
-        }
-
     </style>
 </head>
 <body>
+    <div class="dot-grid"></div>
 
-<!-- Particle Background -->
-<div class="particles"></div>
+    <h1>#ADO</h1>
+    <div class="subtitle">Created by TeeTheHuman <3</div>
 
-<div class="container">
-    <h1>Embed Link Generator</h1>
-    <div class="form-group">
+    <div class="hall-of-clowns">HALL OF CLOWNS</div>
 
-        <label for="description">Embed Description :</label>
-        <textarea id="description" rows="3">Enter text...</textarea>
+    <div class="grid-container" id="pasteGrid">
+        <!-- Dynamic content will be loaded here -->
     </div>
-    <div class="form-group">
-        <label for="color">Embed Color:</label>
-        <input type="color" id="color" value="#7f75e2">
-    </div>
-    <div class="form-group">
-        <label for="author_name">Author Name:</label>
-        <input type="text" id="author_name" value="Test">
-    </div>
-    <div class="form-group">
-        <label for="provider_name">Provider Name:</label>
-        <input type="text" id="provider_name" value="Test">
-    </div>
-    <div class="form-group">
-        <label for="provider_url">Provider URL:</label>
-        <input type="url" id="provider_url" value="">
-    </div>
-    <div class="form-group">
-        <label for="image">Image URL:</label>
-        <input type="url" id="image" value="">
-    </div>
-    <button class="btn" onclick="generateAndCopyLink()">Copy Embed Link</button>
 
-    <div class="embed-preview">
-        <div class="title">Embed Preview</div>
-        <div class="description" id="embedDescription">Please enter the fields above.</div>
-        <div class="footer" id="embedFooter"></div>
-        <div class="footer-text">    > Made by TeeTheHuman</div>
+    <div class="custom-cursor" id="cursor"></div>
 
-    </div>
-</div>
+    <script>
+        // Follow the mouse cursor
+        document.addEventListener('mousemove', function (e) {
+            const cursor = document.getElementById('cursor');
+            cursor.style.left = e.pageX + 'px';
+            cursor.style.top = e.pageY + 'px';
+        });
 
+        // Disable right-click
+        document.addEventListener('contextmenu', function (e) {
+            e.preventDefault(); // Prevent the context menu
+        });
 
-<script>
-    // Particle effect generator
-    const particleContainer = document.querySelector('.particles');
-    for (let i = 0; i < 50; i++) {
-        const particle = document.createElement('div');
-        particle.classList.add('particle');
-        particle.style.left = `${Math.random() * 100}%`;
-        particle.style.animationDuration = `${Math.random() * 5 + 5}s`;
-        particle.style.animationDelay = `${Math.random() * 5}s`;
-        particle.style.animationTimingFunction = 'ease-in-out';
-        particleContainer.appendChild(particle);
-    }
+        // Ripple effect on click (around cursor)
+        document.body.addEventListener('click', function (e) {
+            const ripple = document.createElement('div');
+            ripple.classList.add('ripple');
+            document.body.appendChild(ripple);
 
-    function generateAndCopyLink() {
-        const description = document.getElementById('description').value.split(',').join('%0A');
-        const color = document.getElementById('color').value.slice(1);
-        const author_name = document.getElementById('author_name').value;
-        const provider_name = document.getElementById('provider_name').value;
-        const provider_url = encodeURIComponent(document.getElementById('provider_url').value);
-        const image = encodeURIComponent(document.getElementById('image').value);
+            // Position ripple around the cursor
+            const cursor = document.getElementById('cursor');
+            const rippleSize = 20; // Small size
+            ripple.style.left = `${parseInt(cursor.style.left) - rippleSize / 2}px`;
+            ripple.style.top = `${parseInt(cursor.style.top) - rippleSize / 2}px`;
 
-        const baseUrl = "||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​||||​|| https://webembed-sb.onrender.com/embed?";
-        const embedLink = `${baseUrl}image_type=thumbnail&description=${description}&color=%23${color}&author_name=${author_name}&provider_name=${provider_name}&provider_url=${provider_url}&image=${image}`;
+            // Start the ripple animation
+            setTimeout(() => {
+                ripple.remove();
+            }, 600); // Remove the ripple after animation
+        });
 
-        // Copy Link
-        const tempInput = document.createElement('input');
-        document.body.appendChild(tempInput);
-        tempInput.value = embedLink;
-        tempInput.select();
-        document.execCommand("copy");
-        document.body.removeChild(tempInput);
+        // Fetch and parse the data from the new Pastebin URL
+        fetch('https://i.e-z.host/p/raw/e4474eed4c')
+            .then(response => response.text())
+            .then(data => {
+                console.log("Fetched Data: ", data);  // Debugging: Check raw data
+                const items = parseData(data);
+                const gridContainer = document.getElementById('pasteGrid');
+                
+                if (items.length === 0) {
+                    gridContainer.innerHTML = "No data found!";
+                }
 
-        alert("Embed link copied to clipboard!");
+                items.forEach(item => {
+                    const gridItem = document.createElement('div');
+                    gridItem.classList.add('grid-item');
 
-        // Update Preview
-        const previewDescription = description.split('%0A').join(', ').replace('%24', '$');
-        document.getElementById('embedDescription').innerText = previewDescription;
-        document.getElementById('embedFooter').innerText = `${provider_name} | ${author_name}`;
-    }
-</script>
+                    // Title and Description
+                    const title = document.createElement('h2');
+                    title.innerText = `TITLE: ${item.title}`;
+                    gridItem.appendChild(title);
 
+                    const desc = document.createElement('p');
+                    desc.innerText = `DESC: ${item.desc}`;
+                    gridItem.appendChild(desc);
+
+                    // Optional link
+                    if (item.link) {
+                        const link = document.createElement('a');
+                        link.href = item.link;
+                        link.innerText = `LINK: ${item.link}`;
+                        link.target = '_blank'; // Open link in a new tab
+                        gridItem.appendChild(link);
+                    }
+
+                    // Append the grid item
+                    gridContainer.appendChild(gridItem);
+                });
+            })
+            .catch(error => {
+                console.error("Error fetching data: ", error);
+            });
+
+        // Function to parse the data from Pastebin format
+        function parseData(data) {
+            const items = [];
+            const regex = /''\nTITLE: (.*?)\nDESC: (.*?)\nLINK: (.*?)\n''/g;
+            let match;
+
+            while ((match = regex.exec(data)) !== null) {
+                items.push({
+                    title: match[1],
+                    desc: match[2],
+                    link: match[3] === 'example.com' ? null : match[3] // If link is 'example.com', make it null
+                });
+            }
+
+            return items;
+        }
+    </script>
 </body>
 </html>
